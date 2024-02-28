@@ -1,13 +1,8 @@
-#mongodb+srv://<username>:<password>@krabaton.5mlpr.gcp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-
-#python -m pip install "pymongo[srv]"==3.11
-
-
 
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-uri = "mongodb+srv://goitlearn:<rizun2024>@cluster0.klgot1w.mongodb.net/nnij_bd?retryWrites=true&w=majority&appName=Cluster0"
+uri = "mongodb+srv://vvrizun:<rizun2024>@cluster0.pchjcc0.mongodb.net/nnijdb?retryWrites=true&w=majority&appName=Cluster0"
 
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
