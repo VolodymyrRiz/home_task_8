@@ -1,9 +1,11 @@
 from models import nnij, quotes
 import connect
+import os
 
 while True:
     num = 0
     c = 0
+    flag = 0
     
     print()
     print('Введіть запит:')
@@ -14,39 +16,48 @@ while True:
     print('')
     a = input()
     if a == '':
-        exit
+        os(quit())
     if a == 'Albert' or a == 'Martin':
-       names = nnij.objects()
-       for name in names:
-           name_author = [f'знайдено автора: {nnij.fullname}, народився: {nnij.born_date}, {nnij.born_location}, про автора: {nnij.description}']
-           print(name_author)
-           print()
-           continue
+        nnijs = nnij.objects()
+       
+        for nnij_ in nnijs:   
+            if a in nnij_.fullname:
+                flag = 1
+                zap = [f'знайдено автора: {nnij_.fullname}, народився: {nnij_.born_date}, {nnij_.born_location}, про автора: {nnij_.description}']
+                print(zap)
+                print()
+                continue
     if a == 'change' or a == 'deep-thoughts' or a == 'thinking' or a == 'world' or a == 'humor' or a == 'obvious' or a == 'simile':
-        tags = quotes.objects()
-        for tag in tags:
-            tags_ = [f'знайдено цитату: {quotes.quote}']
-            print(tags_)
-            print()
-            continue
+        tags_ = quotes.objects()
+        for tag_ in tags_:
+            if a in tag_.tags:
+                flag = 1
+                zap = [f'знайдено цитату: {tag_.quote}']
+                print(zap)
+                print()
+                continue       
+    
+    b = a.split(",")
+    num = len(b)
+    
+    if num == 1 and flag == 0:
+        print('УВАГА! Запит неточний, повторіть його!')
+        print()
+        continue
         
-        b = a.split(",")
-        num = len(b)
-        
-        if num == 1:
-            print('УВАГА! Запит неточний, повторіть його!')
-            print()
-            continue
-        if num > 1:
+    if num > 1:
+        tags_ = quotes.objects()
+        for tag_ in tags_:
             for b1 in b:
-                if b1 in tags:
-                    text = quotes.quote                    
+                if b1 in tag_.tags:
+                    text = tag_.quote                    
                     print([f'знайдено цитату: {text}'])  
                     c = +1
                 if c == 0:
                     print('УВАГА! Запит неточний, повторіть його!')
                     print()
                     c = 0
-                continue     
-                      
+                    continue
+        continue     
+                    
 
