@@ -11,18 +11,20 @@ def main():
         pika.ConnectionParameters(host='localhost', port=5672, credentials=credentials))
     channel = connection.channel()
 
-    channel.queue_declare(queue='hello_world')
+    channel.queue_declare(queue='web_riz_queue', durable=True)
 
 
-
-    def callback(ch, method, properties, body):    
-        print(f" [x] Received {body.decode()}")
-        # time.sleep(1)
-        # print(f" [x] Done: {method.delivery_tag}")
-        # ch.basic_ack(delivery_tag=method.delivery_tag)
-
-    #channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(queue='hello_world', on_message_callback=callback, auto_ack=True)
+    def callback(ch, method, properties, body):  
+        message = json.loads(body.decode())
+        print(f" [x] Received {message}")
+        time.sleep(1)
+        print(f" [x] Done: {method.delivery_tag} task")
+        ch.basic_ack(delivery_tag=method.delivery_tag)
+        
+    channel.basic_qos(prefetch_count=1)
+    channel.basic_consume(queue='web_riz_queue', on_message_callback=callback)      
+    
+    
     print(' [*] Waiting for messages. To exit press CTRL+C')
     channel.start_consuming()
 
