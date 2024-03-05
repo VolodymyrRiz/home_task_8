@@ -3,7 +3,7 @@ import configparser
 
 
 config = configparser.ConfigParser()
-config.read('config1.ini')
+config.read('config2.ini')
 
 mongo_user = config.get('DB', 'user')
 mongodb_pass = config.get('DB', 'pass')

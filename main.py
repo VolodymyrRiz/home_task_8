@@ -1,5 +1,5 @@
-from models import nnij, quotes
-import connect
+from models2 import nnij, quotes
+import connect2 as connect2
 import os
 
 while True:
