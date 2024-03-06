@@ -1,9 +1,12 @@
 import os
 import sys
 import pika
-
+import models
+from models import Contact
 import time
 import json
+import mongoengine
+import connect
 
 def main():
     credentials = pika.PlainCredentials('guest', 'guest')
@@ -13,12 +16,13 @@ def main():
 
     channel.queue_declare(queue='web_riz_queue', durable=True)
 
-
+    consumer = 'Rizun'
     def callback(ch, method, properties, body):  
-        message = json.loads(body.decode())
-        print(f" [x] Received {message}")
-        time.sleep(1)
-        print(f" [x] Done: {method.delivery_tag} task")
+        pk = body.decode()
+        task = Contact.objects(id=pk, completed=False).first()
+        if task:
+            task.update(set__completed=True, set__consumer=consumer)
+       
         ch.basic_ack(delivery_tag=method.delivery_tag)
         
     channel.basic_qos(prefetch_count=1)

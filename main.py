@@ -1,4 +1,4 @@
-from models2 import nnij, quotes
+from models2 import Author, Quote
 import connect2 as connect2
 import os
 
@@ -18,7 +18,7 @@ while True:
     if a == '':
         os(quit())
     if a == 'Albert' or a == 'Martin':
-        nnijs = nnij.objects()
+        nnijs = Author.objects()
        
         for nnij_ in nnijs:   
             if a in nnij_.fullname:
@@ -28,7 +28,7 @@ while True:
                 print()
                 continue
     if a == 'change' or a == 'deep-thoughts' or a == 'thinking' or a == 'world' or a == 'humor' or a == 'obvious' or a == 'simile':
-        tags_ = quotes.objects()
+        tags_ = Quote.objects()
         for tag_ in tags_:
             if a in tag_.tags:
                 flag = 1
@@ -46,7 +46,7 @@ while True:
         continue
         
     if num > 1:
-        tags_ = quotes.objects()
+        tags_ = Quote.objects()
         for tag_ in tags_:
             for b1 in b:
                 if b1 in tag_.tags:
