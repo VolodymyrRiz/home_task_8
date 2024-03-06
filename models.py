@@ -10,5 +10,5 @@ from mongoengine.fields import ObjectId, ReferenceField, BooleanField, DateTimeF
 
 class Contact(Document):  
     fullname = StringField(max_length=150)
-    mail = StringField(max_length=150)
+    mail = StringField(required=True)
     log_field = BooleanField(default=False)

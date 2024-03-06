@@ -22,18 +22,22 @@ channel.exchange_declare(exchange='WEB_RIZ', exchange_type='direct')
 channel.queue_declare(queue='web_riz_queue', durable=True)
 channel.queue_bind(exchange='WEB_RIZ', queue='web_riz_queue')
 
-def create_task():
+def create_task(num: int):
     contact_ = Contact.objects()   
-    for i in contact_:
+    for i in range(num):
         message = {
-            #'ObjectId': i.id,
+            'name': contact_[i].fullname,
+            'email': contact_[i].mail,
             'payload': f'Date: {datetime.now().isoformat}',
-            'msg': f"Шановний/а {i.fullname}. Просимо прийти на засідання!"
-        }
+            'msg': f"Шановний/а {contact_[i].fullname}. Просимо прийти на засідання!"
+        }        
     
-        channel.basic_publish(exchange='WEB_RIZ', routing_key='web_riz_queue', body=json.dumps(message).encode())
-connection.close()
+        channel.basic_publish(exchange='WEB_RIZ', routing_key='web_riz_queue', body=json.dumps(message).encode(), properties=pika.BasicProperties(
+                delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+            ))
+
+    connection.close()
        
-if __name__ == '__main__':    
-    create_task()
+if __name__ == '__main__':        
+    create_task(20)
            
